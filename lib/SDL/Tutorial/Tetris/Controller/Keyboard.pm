@@ -3,7 +3,7 @@ package SDL::Tutorial::Tetris::Controller::Keyboard;
 use strict;
 use warnings;
 
-use base 'SDL::Tutorial::Tetris::Controller';
+use base 'SDL::Tutorial::Tetris::Base';
 
 use SDL;
 use SDL::Event;
@@ -11,7 +11,7 @@ use SDL::Event;
 sub notify {
     my ($self, $event) = (@_);
 
-    print "Notify in C::KB \n" if $self->EDEBUG;
+    print "Notify in C::KB \n" if $self->{EDEBUG};
 
     #if we did not have a tick event then some other controller needs to do
     #something so game state is still beign process we cannot have new input
@@ -32,25 +32,28 @@ sub notify {
     my $event_type = $sdl_event->type;
     my $key        = $self->{last_key} || $sdl_event->key_name;
 
-    if ( $key =~ /(down|left|right)/ ) {
+    if ( $key eq 'down' ) { # TODO: left, right
+        # store last pressed key, so the blocks 
+        # will continue sliding next time
         $self->{last_key} = $key;
     }
 
-    if ( $event_type == SDL_QUIT ) {
-        $key = 'escape';
-    }
-    elsif ($event_type == SDL_KEYUP) {
+    if ($event_type == SDL_KEYUP) {
+        # stop sliding on key up
         delete $self->{last_key};
         $key = '';
     }
-   
+    elsif ( $event_type == SDL_QUIT ) {
+        $key = 'escape';
+    }
+
     my %event_key = (
         'escape' => { name => 'Quit' },
-        'up'     => { name => 'CharactorMoveRequest', direction => $self->ROTATE_C },
-        'space'  => { name => 'CharactorMoveRequest', direction => $self->ROTATE_CC },
-        'down'   => { name => 'CharactorMoveRequest', direction => $self->DIRECTION_DOWN },
-        'left'   => { name => 'CharactorMoveRequest', direction => $self->DIRECTION_LEFT },
-        'right'  => { name => 'CharactorMoveRequest', direction => $self->DIRECTION_RIGHT },
+        'up'     => { name => 'CharactorMoveRequest', direction => 'ROTATE_C' },
+        'space'  => { name => 'CharactorMoveRequest', direction => 'ROTATE_CC' },
+        'down'   => { name => 'CharactorMoveRequest', direction => 'DIRECTION_DOWN' },
+        'left'   => { name => 'CharactorMoveRequest', direction => 'DIRECTION_LEFT' },
+        'right'  => { name => 'CharactorMoveRequest', direction => 'DIRECTION_RIGHT' },
     );
 
     $event_to_process = $event_key{$key} if defined $event_key{$key};

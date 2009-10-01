@@ -3,7 +3,7 @@ package SDL::Tutorial::Tetris::Controller::CPUSpinner;
 use strict;
 use warnings;
 
-use base 'SDL::Tutorial::Tetris::Controller';
+use base 'SDL::Tutorial::Tetris::Base';
 
 sub init {
     my $self = shift;
@@ -20,7 +20,7 @@ sub run {
 sub notify {
     my ($self, $event) = (@_);
 
-    print "Notify in CPU Spinner \n" if $self->EDEBUG;
+    print "Notify in CPU Spinner \n" if $self->{EDEBUG};
 
     my %event_method = (
         'Quit' =>  '_quit',
@@ -29,7 +29,7 @@ sub notify {
     my $method = $event_method{ $event->{name} };
 
     if ( defined $method ) {
-        print "Event: $event->{name}\n" if $self->EDEBUG;
+        print "Event: $event->{name}\n" if $self->{EDEBUG};
 
         # call the corresponding method
         $self->$method();

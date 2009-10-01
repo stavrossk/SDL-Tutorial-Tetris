@@ -1,8 +1,8 @@
 ---
 name: SDL-Tutorial-Tetris
-version: 0.015
+version: 0.02
 author: []
-abstract: tetris game using SDL
+abstract: tetris game using SDL(2)
 license: perl
 resources:
   license: http://dev.perl.org/licenses/
@@ -15,12 +15,10 @@ configure_requires:
 provides:
   SDL::Tutorial::Tetris:
     file: lib/SDL/Tutorial/Tetris.pm
-    version: 0.015
+    version: 0.02
   SDL::Tutorial::Tetris::Base:
     file: lib/SDL/Tutorial/Tetris/Base.pm
     version: 0.01
-  SDL::Tutorial::Tetris::Controller:
-    file: lib/SDL/Tutorial/Tetris/Controller.pm
   SDL::Tutorial::Tetris::Controller::CPUSpinner:
     file: lib/SDL/Tutorial/Tetris/Controller/CPUSpinner.pm
   SDL::Tutorial::Tetris::Controller::Game:
@@ -29,8 +27,6 @@ provides:
     file: lib/SDL/Tutorial/Tetris/Controller/Keyboard.pm
   SDL::Tutorial::Tetris::EventManager:
     file: lib/SDL/Tutorial/Tetris/EventManager.pm
-  SDL::Tutorial::Tetris::Model::Blocks:
-    file: lib/SDL/Tutorial/Tetris/Model/Blocks.pm
   SDL::Tutorial::Tetris::Model::Grid:
     file: lib/SDL/Tutorial/Tetris/Model/Grid.pm
   SDL::Tutorial::Tetris::Model::Pieces:

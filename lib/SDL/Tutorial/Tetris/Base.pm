@@ -5,22 +5,9 @@ use warnings;
 
 use SDL::Tutorial::Tetris::EventManager;
 
-# all the classes inherit these basic accessors:
-use Class::XSAccessor accessors => {
-    EDEBUG   => 'EDEBUG',
-    GDEBUG   => 'GDEBUG',
-    KEYDEBUG => 'KEYDEBUG',
-    FPS      => 'FPS',
-};
+use Carp;
 
 our $VERSION = '0.01';
-
-# ...and those constants:
-sub ROTATE_C        { 0 }    # rotates blocks ClockWise
-sub ROTATE_CC       { 1 }    # rotates blocks CounterClockWise
-sub DIRECTION_DOWN  { 2 }    # Drops the block
-sub DIRECTION_LEFT  { 3 }    # move left
-sub DIRECTION_RIGHT { 4 }    # move right
 
 # all the classes will also inherit the evt_manager,
 # so we won't have to pass it around everywhere
@@ -28,9 +15,14 @@ my $evt_manager = SDL::Tutorial::Tetris::EventManager->new();
 sub evt_manager { $evt_manager }
 
 sub new {
-    my ($class, %params) = @_;
+    my ($class, %params) = (@_);
 
-    my $self = bless ({%params}, ref ($class) || $class);
+    my $self = bless {%params}, $class;
+
+    # all controllers must register a listener
+    $self->evt_manager->reg_listener($self);
+
+    $self->init(%params) if $self->can('init');
 
     return $self;
 }
@@ -47,10 +39,6 @@ SDL::Tutorial::Tetris::Base - base class
 
 This is the base class for most of the game objects. We put in this class
 all the information that we want to be visible across the game:
-
-=head2 Constants
-
-=head2 Debug properties
 
 =head2 Event Manager
 
